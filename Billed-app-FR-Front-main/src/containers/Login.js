@@ -15,12 +15,13 @@ export default class Login {
     const formAdmin = this.document.querySelector(`form[data-testid="form-admin"]`)
     formAdmin.addEventListener("submit", this.handleSubmitAdmin)
   }
+
   handleSubmitEmployee = e => {
     e.preventDefault()
     const user = {
       type: "Employee",
-      email: e.target.querySelector(`input[data-testid="employee-email-input"]`).value,
-      password: e.target.querySelector(`input[data-testid="employee-password-input"]`).value,
+      email: e.target.querySelector(`input[id="employee-email-input"]`).value,
+      password: e.target.querySelector(`input[id="employee-password-input"]`).value,
       status: "connected"
     }
     this.localStorage.setItem("user", JSON.stringify(user))
@@ -34,15 +35,14 @@ export default class Login {
         PREVIOUS_LOCATION = this.PREVIOUS_LOCATION
         this.document.body.style.backgroundColor="#fff"
       })
-
   }
 
   handleSubmitAdmin = e => {
     e.preventDefault()
     const user = {
       type: "Admin",
-      email: e.target.querySelector(`input[data-testid="admin-email-input"]`).value, // changement de "employee-email-input" vers "admin-email-input"
-      password: e.target.querySelector(`input[data-testid="admin-password-input"]`).value,
+      email: e.target.querySelector(`input[id="admin-email-input"]`).value, // changement de "employee-email-input" vers "admin-email-input"
+      password: e.target.querySelector(`input[id="admin-password-input"]`).value,
       status: "connected"
     }
     this.localStorage.setItem("user", JSON.stringify(user))
