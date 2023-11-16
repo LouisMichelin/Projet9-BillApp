@@ -20,8 +20,8 @@ export default class Login {
     e.preventDefault()
     const user = {
       type: "Employee",
-      email: e.target.querySelector(`input[id="employee-email-input"]`).value, // data-testid <== id
-      password: e.target.querySelector(`input[id="employee-password-input"]`).value, // data-testid <== id
+      email: e.target.querySelector(`input[data-testid="employee-email-input"]`).value, // data-testid <== id
+      password: e.target.querySelector(`input[data-testid="employee-password-input"]`).value, // data-testid <== id
       status: "connected"
     }
     this.localStorage.setItem("user", JSON.stringify(user))
@@ -41,8 +41,8 @@ export default class Login {
     e.preventDefault()
     const user = {
       type: "Admin",
-      email: e.target.querySelector(`input[id="admin-email-input"]`).value, // data-testid <== id ||||| Changement de "employee-email-input" vers "admin-email-input"
-      password: e.target.querySelector(`input[id="admin-password-input"]`).value, // data-testid <== id
+      email: e.target.querySelector(`input[data-testid="admin-email-input"]`).value, // data-testid <== id ||||| Changement de "employee-email-input" vers "admin-email-input"
+      password: e.target.querySelector(`input[data-testid="admin-password-input"]`).value, // data-testid <== id
       status: "connected"
     }
     this.localStorage.setItem("user", JSON.stringify(user))
