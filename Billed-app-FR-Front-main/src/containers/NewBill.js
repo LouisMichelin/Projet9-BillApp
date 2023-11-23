@@ -26,7 +26,7 @@ export default class NewBill {
     console.log(email)
     formData.append('file', file)
     formData.append('email', email)
-
+    console.log("FILE", file)
     this.store
       .bills()
       .create({
