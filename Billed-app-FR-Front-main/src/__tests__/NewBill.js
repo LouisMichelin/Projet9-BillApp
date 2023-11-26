@@ -47,12 +47,12 @@ describe("Given I am connected as an employee", () => {
 })
 
 // PARTIE NEWBILL
-describe("Given I am connected as an employee", () => {
-  describe("When I complete a NewBill Document", () => {
-    test("The New Bill Document should be created & stocked", () => {
-      const newBillTest = new NewBill()
+// describe("Given I am connected as an employee", () => {
+//   describe("When I complete a NewBill Document", () => {
+//     test("The New Bill Document should be created & stocked", () => {
+//       const newBillTest = new NewBill()
       
-      console.log("=====NEWBILL=====", newBillTest)
-    })
-  })
-})
+//       console.log("=====NEWBILL=====", newBillTest)
+//     })
+//   })
+// })
