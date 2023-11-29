@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 
-import { screen } from "@testing-library/dom"
+import { screen, fireEvent } from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
-import NewBill from "../containers/NewBill.js"
+import NewBill, {bill} from "../containers/NewBill.js"
 
 // ------------------------------------------------------------------------------------------------------------------
 // PARTIE NEWBILLUI
@@ -45,20 +45,34 @@ describe("Given I am connected as an employee", () => {
   describe("When I complete a NewBill Document", () => {
     test("passing newbill.js test", () => {
 
-      const testDocument = "?"
 
-      console.log(new NewBill())
+      const bill = {
+        // email,
+        type: document.querySelector('select[data-testid="expense-type"]')[2].value,
+        name: "Test1337",
+        amount: 1337,
+        date: "2023-11-27",
+        vat: 70,
+        pct: 20,
+        commentary: "Encore un test",
+        fileUrl: "E:/Pictures/Dégradé Bleus.jpg",
+        fileName: "Dégradé Bleus.jpg",
+        status: 'pending'
+      }
+      
+      // Définit le <input> pour Justificatif
+      const fileField = screen.getByTestId("file");
+      //
+      fireEvent.change(
+        fileField,
+        { target: { files: [ new File([bill.fileName], bill.fileUrl, { type: "image/png" }) ] } }
+      );
+      //
+      expect(fileField.files[0].name).toBe(bill.fileUrl);
+      expect(fileField.files[0].type).toBe("image/png");
+      // expect(handleChangeFile).toHaveBeenCalled();
 
       
-
-
-
-
-
-
-
-
-
 
     })
   })
