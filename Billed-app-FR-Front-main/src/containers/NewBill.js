@@ -22,11 +22,13 @@ export default class NewBill {
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
+    const authorizedImageTypes = ["image/jpg", "image/jpeg", "image/png"] //types d'images autorisés
     console.log(formData)
     console.log(email)
     formData.append('file', file)
     formData.append('email', email)
     console.log("FILE", file)
+    if (authorizedImageTypes.includes(file.type)) {
     this.store
       .bills()
       .create({
@@ -41,6 +43,9 @@ export default class NewBill {
         this.fileUrl = fileUrl
         this.fileName = fileName
       }).catch(error => console.error(error))
+    } else {
+      alert("Le format du fichier n'est pas bon");
+    }
   }
   handleSubmit = e => {
     e.preventDefault()

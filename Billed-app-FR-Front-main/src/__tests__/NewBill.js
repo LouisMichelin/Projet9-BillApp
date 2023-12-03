@@ -2,13 +2,17 @@
  * @jest-environment jsdom
  */
 
-import { screen, fireEvent } from "@testing-library/dom"
+import { screen, fireEvent, waitFor } from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
-import NewBill, {bill} from "../containers/NewBill.js"
+import NewBill from "../containers/NewBill.js"
+import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
+import { localStorageMock } from "../__mocks__/localStorage.js";
+import mockStore from "../__mocks__/store";
+import router from "../app/Router.js";
 
-// ------------------------------------------------------------------------------------------------------------------
-// PARTIE NEWBILLUI
-// ------------------------------------------------------------------------------------------------------------------
+///////////////////////////////////////////
+////////// PARTIE : NEWBILLUI.js //////////
+///////////////////////////////////////////
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
     test("All the NewBill's Page inputs should be empty", () => {
@@ -38,42 +42,34 @@ describe("Given I am connected as an employee", () => {
   })
 })
 
-// ------------------------------------------------------------------------------------------------------------------
-// PARTIE NEWBILL
-// ------------------------------------------------------------------------------------------------------------------
+/////////////////////////////////////////
+////////// PARTIE : NEWBILL.js //////////
+/////////////////////////////////////////
 describe("Given I am connected as an employee", () => {
   describe("When I complete a NewBill Document", () => {
     test("passing newbill.js test", () => {
-
-
       const bill = {
-        // email,
-        type: document.querySelector('select[data-testid="expense-type"]')[2].value,
-        name: "Test1337",
-        amount: 1337,
-        date: "2023-11-27",
-        vat: 70,
+        email: "employee@test.tld",
+        type: "Transports",
+        name: "TGV",
+        amount: 120,
+        date: "2023-08-24",
+        vat: "20",
         pct: 20,
-        commentary: "Encore un test",
-        fileUrl: "E:/Pictures/Dégradé Bleus.jpg",
-        fileName: "Dégradé Bleus.jpg",
+        commentary: "Facture test",
+        fileUrl: "testFacture.png",
+        fileName: "testFacture",
         status: 'pending'
-      }
-      
+      };
       // Définit le <input> pour Justificatif
       const fileField = screen.getByTestId("file");
-      //
       fireEvent.change(
         fileField,
         { target: { files: [ new File([bill.fileName], bill.fileUrl, { type: "image/png" }) ] } }
       );
-      //
       expect(fileField.files[0].name).toBe(bill.fileUrl);
       expect(fileField.files[0].type).toBe("image/png");
-      // expect(handleChangeFile).toHaveBeenCalled();
-
-      
-
+      expect(handleChangeFile).toHaveBeenCalled();
     })
   })
 })
