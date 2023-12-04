@@ -10,11 +10,28 @@ import { localStorageMock } from "../__mocks__/localStorage.js";
 import mockStore from "../__mocks__/store";
 import router from "../app/Router.js";
 
-///////////////////////////////////////////
-////////// PARTIE : NEWBILLUI.js //////////
-///////////////////////////////////////////
+// Initialisation
+jest.mock("../app/Store", () => mockStore);
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
+    test("Then mail icon in vertical layout should be highlighted", async () => {
+      Object.defineProperty(window, "localStorage", { value: localStorageMock });
+      window.localStorage.setItem("user", JSON.stringify({ type: "Employee" }));
+      const root = document.createElement("div");
+      root.setAttribute("id", "root");
+      document.body.append(root);
+      router();
+      window.onNavigate(ROUTES_PATH.NewBill);
+      await waitFor(() => screen.getByTestId("icon-mail"));
+      const mailIcon = screen.getByTestId("icon-mail");
+      expect(mailIcon).toBeTruthy();
+    });
+  });
+})
+
+describe("Given I am connected as an employee", () => {
+  // PARTIE NEWBILLUI.js
+  describe("When I am on a NewBill Page", () => {
     test("All the NewBill's Page inputs should be empty", () => {
       const html = NewBillUI()
       document.body.innerHTML = html
@@ -29,47 +46,81 @@ describe("Given I am connected as an employee", () => {
       document.body.innerHTML = html
       // Tous les champs 'required' du formulaire NewBill :
       const typeDeDepense = document.querySelector('select[data-testid="expense-type"]')[2].value
-      const depenseName = "Test Nom de Dépense" // document.querySelector('input[data-testid="expense-name"]')
-      const depenseDate = "2023-11-27" // document.querySelector('input[data-testid="datepicker"]')
-      const depenseAmount = 1337 // document.querySelector('input[data-testid="amount"]')
-      const depenseTVA = 70 // document.querySelector('input[data-testid="vat"]')
-      const depensePCT = 20 // document.querySelector('input[data-testid="pct"]')
-      const depenseCommentaire = "Ceci est un commentaire ajouté dans la zone du Formulaire" // document.querySelector('textarea[data-testid="commentary"]')
-      const depenseJustificatifFile = true // document.querySelector('input[type="file"]')
-      // console.log(typeDeDepense, depenseName, depenseDate, depenseAmount, depenseTVA, depensePCT, depenseCommentaire, depenseJustificatifFile)
+      const depenseName = "Test Nom de Dépense"
+      const depenseDate = "2023-11-27"
+      const depenseAmount = 1337
+      const depenseTVA = 70
+      const depensePCT = 20
+      const depenseCommentaire = "Ceci est un commentaire ajouté dans la zone du Formulaire"
+      const depenseJustificatifFile = true
       expect(typeDeDepense && depenseName && depenseDate && depenseAmount && depenseTVA && depensePCT && depenseCommentaire && depenseJustificatifFile).toBeDefined()
     })
   })
-})
-
-/////////////////////////////////////////
-////////// PARTIE : NEWBILL.js //////////
-/////////////////////////////////////////
-describe("Given I am connected as an employee", () => {
-  describe("When I complete a NewBill Document", () => {
-    test("passing newbill.js test", () => {
+  // PARTIE NEWBILL.js
+  describe("When I complete a NewBill Page", () => {
+    test("When I submit all the data", async () => {
+      // Initialisation
+      const html = NewBillUI()
+      document.body.innerHTML = html
       const bill = {
         email: "employee@test.tld",
         type: "Transports",
         name: "TGV",
-        amount: 120,
-        date: "2023-08-24",
-        vat: "20",
+        amount: 1337,
+        date: "2023-12-04",
+        vat: "70",
         pct: 20,
-        commentary: "Facture test",
+        commentary: "Facture Test",
         fileUrl: "testFacture.png",
         fileName: "testFacture",
         status: 'pending'
       };
-      // Définit le <input> pour Justificatif
-      const fileField = screen.getByTestId("file");
-      fireEvent.change(
-        fileField,
-        { target: { files: [ new File([bill.fileName], bill.fileUrl, { type: "image/png" }) ] } }
-      );
-      expect(fileField.files[0].name).toBe(bill.fileUrl);
-      expect(fileField.files[0].type).toBe("image/png");
+      // Type
+      const formulaireType = screen.getByTestId("expense-type");
+      fireEvent.change(formulaireType, { target: { value: bill.type } });
+      expect(formulaireType.value).toBe(bill.type);
+      // Nom
+      const formulaireNom = screen.getByTestId("expense-name");
+      fireEvent.change(formulaireNom, { target: { value: bill.name } });
+      expect(formulaireNom.value).toBe(bill.name);
+      // Date
+      const formulaireDate = screen.getByTestId("datepicker");
+      fireEvent.change(formulaireDate, { target: { value: bill.date } });
+      expect(formulaireDate.value).toBe(bill.date);
+      // Prix
+      const formulairePrix = screen.getByTestId("amount");
+      fireEvent.change(formulairePrix, { target: { value: bill.amount } });
+      expect(parseInt(formulairePrix.value)).toBe(parseInt(bill.amount));
+      // TVA
+      const formulaireTVA = screen.getByTestId("vat");
+      fireEvent.change(formulaireTVA, { target: { value: bill.vat } });
+      expect(parseInt(formulaireTVA.value)).toBe(parseInt(bill.vat));
+      // PCT
+      const formulairePCT = screen.getByTestId("pct");
+      fireEvent.change(formulairePCT, { target: { value: bill.pct } });
+      expect(parseInt(formulairePCT.value)).toBe(parseInt(bill.pct));
+      // Commentaire
+      const formulaireCommentaire = screen.getByTestId("commentary");
+      fireEvent.change(formulaireCommentaire, { target: { value: bill.commentary } });
+      expect(formulaireCommentaire.value).toBe(bill.commentary);
+      ////////////////////////////////////////////////////////
+      const newBillForm = screen.getByTestId("form-new-bill");
+      const onNavigate = pathname => { document.body.innerHTML = ROUTES({ pathname }); };
+      Object.defineProperty(window, "localStorage", { value: localStorageMock });
+      const newBill = new NewBill({ document, onNavigate, store: mockStore, localStorage: window.localStorage });
+      const handleChangeFile = jest.fn(newBill.handleChangeFile);
+      newBillForm.addEventListener("change", handleChangeFile);
+      // Justificatif
+      const formulaireJustificatif = screen.getByTestId("file");
+      fireEvent.change(formulaireJustificatif, { target: { files: [ new File([bill.fileName], bill.fileUrl, { type: "image/png" }) ] } });
+      expect(formulaireJustificatif.files[0].name).toBe(bill.fileUrl);
+      expect(formulaireJustificatif.files[0].type).toBe("image/png");
       expect(handleChangeFile).toHaveBeenCalled();
+      ///////////////////////////////////////////////////
+      const handleSubmit = jest.fn(newBill.handleSubmit);
+      newBillForm.addEventListener("submit", handleSubmit);
+      fireEvent.submit(newBillForm);
+      expect(handleSubmit).toHaveBeenCalled();
     })
   })
 })

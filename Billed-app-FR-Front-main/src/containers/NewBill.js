@@ -29,22 +29,22 @@ export default class NewBill {
     formData.append('email', email)
     console.log("FILE", file)
     if (authorizedImageTypes.includes(file.type)) {
-    this.store
-      .bills()
-      .create({
-        data: formData,
-        headers: {
-          noContentType: true
-        }
-      })
-      .then(({fileUrl, key}) => {
-        console.log(fileUrl)
-        this.billId = key
-        this.fileUrl = fileUrl
-        this.fileName = fileName
-      }).catch(error => console.error(error))
+      this.store
+        .bills()
+        .create({
+          data: formData,
+          headers: {
+            noContentType: true
+          }
+        })
+        .then(({fileUrl, key}) => {
+          console.log(fileUrl)
+          this.billId = key
+          this.fileUrl = fileUrl
+          this.fileName = fileName
+        }).catch(error => console.error(error))
     } else {
-      alert("Le format du fichier n'est pas bon");
+      alert("Le format du fichier n'est pas bon.");
     }
   }
   handleSubmit = e => {
