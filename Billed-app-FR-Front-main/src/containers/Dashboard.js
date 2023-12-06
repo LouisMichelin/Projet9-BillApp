@@ -29,10 +29,8 @@ export const filteredBills = (data, status) => {
 
 export const card = (bill) => {
   const firstAndLastNames = bill.email.split('@')[0]
-  const firstName = firstAndLastNames.includes('.') ?
-    firstAndLastNames.split('.')[0] : ''
-  const lastName = firstAndLastNames.includes('.') ?
-  firstAndLastNames.split('.')[1] : firstAndLastNames
+  const firstName = firstAndLastNames.includes('.') ? firstAndLastNames.split('.')[0] : ''
+  const lastName = firstAndLastNames.includes('.') ? firstAndLastNames.split('.')[1] : firstAndLastNames
 
   return (`
     <div class='bill-card' id='open-bill${bill.id}' data-testid='open-bill${bill.id}'>
@@ -98,16 +96,15 @@ export default class {
       this.counter ++
     } else {
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
-
       $('.dashboard-right-container div').html(`
         <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
       `)
       $('.vertical-navbar').css({ height: '120vh' })
       this.counter ++
     }
-    $('#icon-eye-d').click(this.handleClickIconEye)
-    $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
-    $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
+      $('#icon-eye-d').click(this.handleClickIconEye)
+      $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
+      $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
   }
 
   handleAcceptSubmit = (e, bill) => {
@@ -132,7 +129,8 @@ export default class {
 
   handleShowTickets(e, bills, index) {
     if (this.counter === undefined || this.index !== index) this.counter = 0
-    if (this.index === undefined || this.index !== index) this.index = index
+    if (this.index === undefined || this.index !== index)this.index = index
+    
     if (this.counter % 2 === 0) {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
@@ -146,7 +144,8 @@ export default class {
     }
 
     bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+      $(`#status-bills-container${this.index} #open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills)) // REPLACEMENT CODE
+      // $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills)) // ORIGINAL CODE
     })
 
     return bills
