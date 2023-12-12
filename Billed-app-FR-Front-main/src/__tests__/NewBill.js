@@ -32,6 +32,7 @@ describe("Given I am connected as an employee", () => {
 describe("Given I am connected as an employee", () => {
   // PARTIE NEWBILLUI.js
   describe("When I am on a NewBill Page", () => {
+    
     test("All the NewBill's Page inputs should be empty", () => {
       const html = NewBillUI()
       document.body.innerHTML = html
@@ -40,6 +41,7 @@ describe("Given I am connected as an employee", () => {
       const zoneCommentaire = document.getElementsByTagName("textarea").value
       expect(allInputs && zoneCommentaire).toBe(undefined)
     })
+
     test("Every 'required' inputs should be filled before creating a new bill", () => {
       // Initialisation du formulaire :
       const html = NewBillUI()

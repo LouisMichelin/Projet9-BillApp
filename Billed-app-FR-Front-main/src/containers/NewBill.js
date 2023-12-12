@@ -23,11 +23,11 @@ export default class NewBill {
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     const authorizedImageTypes = ["image/jpg", "image/jpeg", "image/png"] //types d'images autorisés
-    console.log(formData)
-    console.log(email)
+    // console.log(formData)
+    // console.log(email)
     formData.append('file', file)
     formData.append('email', email)
-    console.log("FILE", file)
+    // console.log("FILE", file)
     if (authorizedImageTypes.includes(file.type)) {
       this.store
         .bills()
@@ -38,18 +38,19 @@ export default class NewBill {
           }
         })
         .then(({fileUrl, key}) => {
-          console.log(fileUrl)
+          // console.log(fileUrl)
           this.billId = key
           this.fileUrl = fileUrl
           this.fileName = fileName
         }).catch(error => console.error(error))
     } else {
-      alert("Le format du fichier n'est pas bon.");
-    }
+        alert("Le format du fichier n'est pas bon.");
+        this.document.querySelector(`input[data-testid="file"]`).value = null;
+      }
   }
   handleSubmit = e => {
     e.preventDefault()
-    console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
+    // console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
       email,
