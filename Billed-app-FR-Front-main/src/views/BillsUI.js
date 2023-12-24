@@ -19,41 +19,16 @@ export const row = (bill) => {
     `)
   }
 
-
 // const rows = (data) => {
 //   return (data && data.length) ? data.sort((a, b) => (a.date < b.date ? 1 : -1)).map(bill => row(bill)).join("") : "";
 // }
 
-
-//Rapport Bug trie
 const rows = (data) => {
   return (data && data.length) ? data
   .sort((a, b) => new Date(b.date) - new Date(a.date))
   .map(bill => row(bill))
   .join("") : ""
 }
-
-
-
-// const rows = (data) => {
-//   for (let i=0; i<data.length; i++) {
-//     console.log(data[i])
-//     data[i].date = new Date(data[i].date)
-//     console.log(data[i].date)
-
-//   }
-// }
-  // // return (data && data.length) ? data.sort((a, b) => (a.date > b.date ? 1 : -1)).map(bill => row(bill)).join("") : "";
-  // console.log("data", data);
-  // return (data && data.length) ? data.sort((a, b) => (a.date > b.date ? 1 : -1)).map(bill => row(bill)).join("") : "";
-
-
-
-
-
-
-
-
 
 export default ({ data: bills, loading, error }) => {
   
