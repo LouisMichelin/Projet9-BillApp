@@ -77,31 +77,24 @@ describe("Given I am connected as an employee", () => {
         fileName: "testFacture",
         status: 'pending'
       };
-      // Type
       const formulaireType = screen.getByTestId("expense-type");
       fireEvent.change(formulaireType, { target: { value: bill.type } });
       expect(formulaireType.value).toBe(bill.type);
-      // Nom
       const formulaireNom = screen.getByTestId("expense-name");
       fireEvent.change(formulaireNom, { target: { value: bill.name } });
       expect(formulaireNom.value).toBe(bill.name);
-      // Date
       const formulaireDate = screen.getByTestId("datepicker");
       fireEvent.change(formulaireDate, { target: { value: bill.date } });
       expect(formulaireDate.value).toBe(bill.date);
-      // Prix
       const formulairePrix = screen.getByTestId("amount");
       fireEvent.change(formulairePrix, { target: { value: bill.amount } });
       expect(parseInt(formulairePrix.value)).toBe(parseInt(bill.amount));
-      // TVA
       const formulaireTVA = screen.getByTestId("vat");
       fireEvent.change(formulaireTVA, { target: { value: bill.vat } });
       expect(parseInt(formulaireTVA.value)).toBe(parseInt(bill.vat));
-      // PCT
       const formulairePCT = screen.getByTestId("pct");
       fireEvent.change(formulairePCT, { target: { value: bill.pct } });
       expect(parseInt(formulairePCT.value)).toBe(parseInt(bill.pct));
-      // Commentaire
       const formulaireCommentaire = screen.getByTestId("commentary");
       fireEvent.change(formulaireCommentaire, { target: { value: bill.commentary } });
       expect(formulaireCommentaire.value).toBe(bill.commentary);
@@ -125,4 +118,26 @@ describe("Given I am connected as an employee", () => {
       expect(handleSubmit).toHaveBeenCalled();
     })
   })
+})
+
+
+
+
+// TESTS 404 / 500
+// ICI
+// MEME !
+describe("Given I am connected as an employee", () => {
+
+  describe("WHEN I TEST ERROR 404", () => {
+    it("SHOULD RETURN ERROR 404", () => {
+      
+    });
+  });
+
+  describe("WHEN I TEST ERROR 500", () => {
+    it("SHOULD RETURN ERROR 500", () => {
+      
+    });
+  });
+
 })
